@@ -1,1 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI YouTube Predictor</title>
 
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        h1 {
+            color: #38bdf8;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            background: #38bdf8;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            color: #94a3b8;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: none;
+            background: #22c55e;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .card {
+            background: #334155;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 10px;
+        }
+
+        .highlight {
+            color: #22c55e;
+            font-size: 22px;
+        }
+
+        ul {
+            list-style: none;
+        }
+    </style>
+
+    <script>
+        function showFileName(input) {
+            document.getElementById("file-name").innerText = input.files[0].name;
+        }
+    </script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🚀 AI YouTube Performance Predictor</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label class="file-label">
+            Choose Excel File
+            <input type="file" name="file" class="file-input" onchange="showFileName(this)" required>
+        </label>
+
+        <div id="file-name" class="file-name">No file chosen</div>
+
+        <br>
+        <button type="submit">Analyze & Predict</button>
+    </form>
+
+    {% if predictions %}
+    <div class="card">
+        <h2>📊 Future Predictions (BetterXGBoost)</h2>
+        <ul>
+            <li>Views → <span class="highlight">{{ predictions.views }}</span></li>
+            <li>Likes → <span class="highlight">{{ predictions.likes }}</span></li>
+            <li>Comments → <span class="highlight">{{ predictions.comments }}</span></li>
+            <li>Subscribers → <span class="highlight">{{ predictions.subscribers }}</span></li>
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if shap_result %}
+    <div class="card">
+        <h2>🧠 Feature Contribution (%)</h2>
+        <ul>
+            {% for key, value in shap_result.items() %}
+                <li>{{ key }} → {{ value }}%</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
